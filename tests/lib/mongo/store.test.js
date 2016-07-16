@@ -109,4 +109,18 @@ describe('mongo.store', function(){
 		});
 	});
 
+	describe('validate', function(){
+		it('should validate the data', function(){
+			var userModel = orm.load('users');
+			var validated = userModel.validate({
+				action: 'insert',
+				data: {
+					name: 'lexa',
+					wrongField: 'this should be filtered out'
+				}
+			});
+			assert.isObject(validated);
+		});
+	});
+
 });
