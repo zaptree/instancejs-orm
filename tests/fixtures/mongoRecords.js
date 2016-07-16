@@ -3,7 +3,7 @@
 var ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
-	'Users': [
+	'users': [
 		{
 			_id: new ObjectId('55300b3d133a91947cb8154a'),
 			name: 'john'
