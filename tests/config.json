@@ -1,0 +1,9 @@
+{
+	"databases": {
+		"mongodb": {
+			"default": {
+				"uri": "mongodb://localhost/instancejs_orm_test"
+			}
+		}
+	}
+}
