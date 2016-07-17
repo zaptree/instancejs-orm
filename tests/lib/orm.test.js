@@ -25,11 +25,16 @@ describe('ORM', function(){
 		});
 	});
 
+	after(function(){
+		// no need to do after each since connections are shared between orm instances
+		return orm.close();
+	});
+
 	it('should create an instance of a model', function(){
 		assert.isObject(orm.utils.mongo);
 
 		// loading model using the custom loader
-		var userModel = orm.load('users');
+		var userModel = orm.load('user');
 		// loading model by manually passing in the model
 		var commentModel = orm.load('comments', {
 			db: 'mongo.default',
