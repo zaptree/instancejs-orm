@@ -6,6 +6,7 @@ var assert = require('chai').assert,
 var	ORM = require('../../../lib/ORM'),
 	models = require('../../fixtures/models'),
 	config = require('../../config'),
+	ObjectId = require('mongodb').ObjectId,
 	mongoRecords = require('../../fixtures/mongoRecords');
 
 describe('mongo.store', function(){
@@ -18,14 +19,16 @@ describe('mongo.store', function(){
 			databases: config.databases,
 			loader: key=> modelClasses[key]
 		});
-		return orm.utils.mongo.loadFixtures(config.databases.mongodb.default.uri, mongoRecords);
+		return orm.utils.mongo.loadFixtures(config.databases.mongo.default.uri, mongoRecords);
 	});
 	describe('find', function(){
 		it('should be able to find results', function(){
 			var userModel = orm.load('users');
 			return userModel
 				.find({
-
+					conditions: {
+						role: 'user'
+					}
 				})
 				.then(results=>{
 					assert(results.length > 0);
@@ -38,7 +41,9 @@ describe('mongo.store', function(){
 			var userModel = orm.load('users');
 			return userModel
 				.findOne({
-
+					conditions: {
+						_id: new ObjectId('55300b3d133a91947cb8154a')
+					}
 				})
 				.then(result=>{
 					assert.isObject(result);
@@ -52,11 +57,12 @@ describe('mongo.store', function(){
 			return userModel
 				.insert({
 					data: {
+						//_id: new ObjectId(),
 						name: 'Jennifer'
 					}
 				})
 				.then(result=>{
-					assert.isObject(result);
+					assert(result.insertedId.toString());
 				});
 		});
 	});
@@ -67,14 +73,32 @@ describe('mongo.store', function(){
 			return userModel
 				.update({
 					conditions: {
-						name: 'Nick'
+						_id: new ObjectId('55300b3d133a91947cb8154a')
 					},
 					data: {
 						name: 'Chad'
 					}
 				})
 				.then(result=>{
-					assert.isObject(result);
+					assert(result.modifiedCount > 0);
+				});
+		});
+	});
+
+	describe('upsert', function(){
+		it('should be able to upsert a record', function(){
+			var userModel = orm.load('users');
+			return userModel
+				.upsert({
+					conditions: {
+						_id: new ObjectId('55300b3d133a91947cb8154a')
+					},
+					data: {
+						name: 'Chad'
+					}
+				})
+				.then(result=>{
+					assert(result.modifiedCount > 0);
 				});
 		});
 	});
@@ -85,26 +109,11 @@ describe('mongo.store', function(){
 			return userModel
 				.remove({
 					conditions: {
-						name: 'Nick'
+						_id: new ObjectId('55300b3d133a91947cb8154a')
 					}
 				})
 				.then(result=>{
-					assert.isObject(result);
-				});
-		});
-	});
-
-	describe('findAndRemove', function(){
-		it('should be able to findAndRemove a record', function(){
-			var userModel = orm.load('users');
-			return userModel
-				.findAndRemove({
-					conditions: {
-						name: 'Nick'
-					}
-				})
-				.then(result=>{
-					assert.isObject(result);
+					assert(result.deletedCount > 0);
 				});
 		});
 	});

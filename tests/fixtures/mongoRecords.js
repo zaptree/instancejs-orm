@@ -6,11 +6,18 @@ module.exports = {
 	'users': [
 		{
 			_id: new ObjectId('55300b3d133a91947cb8154a'),
-			name: 'john'
+			name: 'john',
+			role: 'admin'
 		},
 		{
 			_id: new ObjectId('552f2abb08b215a87b67ed14'),
-			name: 'nick'
+			name: 'nick',
+			role: 'user'
+		},
+		{
+			_id: new ObjectId('55300b3d133a91947cb81533'),
+			name: 'helen',
+			role: 'user'
 		}
 	]
 };

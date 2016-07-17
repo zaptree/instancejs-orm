@@ -1,6 +1,6 @@
 {
 	"databases": {
-		"mongodb": {
+		"mongo": {
 			"default": {
 				"uri": "mongodb://localhost/instancejs_orm_test"
 			}
