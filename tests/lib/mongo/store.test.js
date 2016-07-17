@@ -51,6 +51,24 @@ describe('mongo.store', function(){
 		});
 	});
 
+	describe('relationships', function(){
+		describe('belongsTo', function(){
+			it('XXXXXXXX', function(){
+				assert(false);
+			});
+		});
+		describe('hasOne', function(){
+			it('XXXXXXXX', function(){
+				assert(false);
+			});
+		});
+		describe('hasMany', function(){
+			it('XXXXXXXX', function(){
+				assert(false);
+			});
+		});
+	});
+
 	describe('insert', function(){
 		it('should be able to insert a record', function(){
 			var userModel = orm.load('users');
@@ -116,6 +134,10 @@ describe('mongo.store', function(){
 					assert(result.deletedCount > 0);
 				});
 		});
+
+		it('should cascade delete', function(){
+			assert(false);
+		})
 	});
 
 	describe('validate', function(){
