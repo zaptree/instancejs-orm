@@ -102,7 +102,44 @@ module.exports = {
 	user: {
 		table:'users',
 		schema:{
-
+			properties: {
+				_id:{
+					type:'ObjectId',
+					cast: true,
+				},
+				name:{
+					type:'string',
+					required: true
+				},
+				email:{
+					type:'string',
+					validation:'email',
+					required: true
+				},
+				role:{
+					type:'string',
+					required: true
+				},
+				classes:{
+					type: 'array',
+					schema: {
+						type: 'object',
+						properties: {
+							completed:{
+								type:'boolean'
+							},
+							rating: {
+								type: 'number',
+								validation: 'between[0,10]'
+							},
+							class_id:{
+								type:'ObjectId',
+								cast: true
+							}
+						}
+					}
+				}
+			}
 		},
 
 		relationships: {
@@ -133,17 +170,6 @@ module.exports = {
 		table:'posts',
 		strictSchema:true,
 		schema:{
-			_id:{
-				type:'ObjectId'
-			},
-			title:{
-				type:'string',
-				validation:'required'
-			},
-			user_id:{
-				type:'ObjectId',
-				validation:'required'
-			}
 
 
 		},

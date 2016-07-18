@@ -22,7 +22,7 @@ describe('mongo.store', function () {
 		return orm.utils.mongo.loadFixtures(config.databases.mongo.default.uri, mongoRecords);
 	});
 
-	after(function(){
+	after(function () {
 		// no need to do after each since connections are shared between orm instances
 		return orm.close();
 	});
@@ -197,7 +197,9 @@ describe('mongo.store', function () {
 				.insert({
 					data: {
 						//_id: new ObjectId(),
-						name: 'Jennifer'
+						name: 'Jennifer',
+						role: 'user',
+						email: 'test@test.com'
 					}
 				})
 				.then(result=> {
@@ -219,6 +221,7 @@ describe('mongo.store', function () {
 					}
 				})
 				.then(result=> {
+					assert(!result.errors);
 					assert(result.modifiedCount > 0);
 				});
 		});
@@ -248,7 +251,7 @@ describe('mongo.store', function () {
 			var userModel = orm.load('user');
 			var postModel = orm.load('post');
 
-			function getData(){
+			function getData() {
 				return Promise
 					.all([
 						userModel.find({
@@ -263,19 +266,20 @@ describe('mongo.store', function () {
 						})
 
 					])
-					.then(results=>{
+					.then(results=> {
 						return {
 							users: results[0].length,
 							posts: results[0].length
 						};
 					});
 			}
+
 			return getData()
-				.then(results=>{
+				.then(results=> {
 					assert(results.users > 0);
 					assert(results.posts > 0);
 				})
-				.then(()=>{
+				.then(()=> {
 					return userModel.remove({
 						conditions: {
 							_id: user_id
@@ -289,7 +293,7 @@ describe('mongo.store', function () {
 					assert(result.relatedResults[0].relatedResults[1].deletedCount > 0, 'it should delete related uploads to deleted posts');
 					return getData();
 				})
-				.then(results=>{
+				.then(results=> {
 					assert(results.users === 0);
 					assert(results.posts === 0);
 				});
@@ -299,14 +303,21 @@ describe('mongo.store', function () {
 	describe('validate', function () {
 		it('should validate the data', function () {
 			var userModel = orm.load('user');
+			var data = {
+				name: 'lexa',
+				role: 'user',
+				email: 'test@test.com',
+				wrongField: 'this should be filtered out'
+			};
+			// userModel.schemaValidator.schema
+			assert.isArray(userModel.schemaValidator.schema.properties.classes.schema.properties.rating.validation);
 			var validated = userModel.validate({
 				action: 'insert',
-				data: {
-					name: 'lexa',
-					wrongField: 'this should be filtered out'
-				}
+				data: data
 			});
 			assert.isObject(validated);
+			assert(validated.valid);
+			assert.deepEqual(_.omit(validated.data, '_id'), _.omit(data, 'wrongField', '_id'));
 		});
 	});
 

@@ -28,6 +28,7 @@
     "mocha": "^2.5.3"
   },
   "dependencies": {
+    "instancejs-schema-validator": "github:zaptree/instancejs-schema-validator#0_1_1",
     "bluebird": "^3.4.1",
     "lodash": "^4.13.1",
     "mongodb": "^2.2.1"
