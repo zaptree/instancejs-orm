@@ -2,7 +2,7 @@
   "name": "instancejs-orm",
   "version": "1.0.0",
   "description": "",
-  "main": "libe/ORM.js",
+  "main": "lib/ORM.js",
   "scripts": {
     "test": "gulp test"
   },
