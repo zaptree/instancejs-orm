@@ -304,6 +304,7 @@ describe('mongo.store', function () {
 		it('should validate the data', function () {
 			var userModel = orm.load('user');
 			var data = {
+				_id: '55300b3d133a91947cb81534',
 				name: 'lexa',
 				role: 'user',
 				email: 'test@test.com',
